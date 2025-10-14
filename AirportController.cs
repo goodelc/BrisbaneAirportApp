@@ -146,13 +146,13 @@ namespace BrisbaneAirportApp
             string ff;
             while (true)
             {
-                Console.WriteLine("Please enter in your frequent flyer number: ");
+                Console.WriteLine("Please enter in your frequent flyer number between 100000 and 999999: ");
                 ff = ReadNonEmpty();
                 if (int.TryParse(ff, out var n) && Validators.ValidFFNumber(n)) break;
                 PrintError("Supplied frequent flyer number is invalid.");
             }
 
-            int pts = AskInt("Please enter in your frequent flyer points (0-1000000): ", 0, 1_000_000);
+            int pts = AskInt("Please enter in your current frequent flyer points between 0 and 1000000 : ", 0, 1_000_000);
 
             _auth.RegisterFrequent(name, age, email, mobile, pwd, ff, pts);
             Console.WriteLine($"Congratulations {name}. You have registered as a frequent flyer.");
@@ -313,15 +313,15 @@ namespace BrisbaneAirportApp
 
         private void ChangePasswordFlow(string email)
         {
-            Console.WriteLine("Please enter in your current password: ");
+            Console.WriteLine("Please enter your current password.");
             var oldp = ReadNonEmpty();
             //PrintPasswordRules();
-            Console.WriteLine("Please enter in your new password: ");
+            Console.WriteLine("Please enter your new password.");
             var newp = ReadPasswordLoop();
             try
             {
                 _auth.ChangePassword(email, oldp, newp);
-                Console.WriteLine("Password changed.");
+                //Console.WriteLine("Password changed.");
             }
             catch (Exception ex)
             {
