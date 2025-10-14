@@ -12,7 +12,7 @@ Which user type would you like to register?
 2. A frequent flyer.
 3. A flight manager.
 Please enter a choice between 1 and 3:
-Registering as a traveller.
+Registering as a frequent flyer.
 Please enter in your name:
 Please enter in your value between 0 and 99:
 Please enter in your mobile number:
@@ -23,7 +23,9 @@ Your password must:
 -contain a number
 -contain a lowercase letter
 -contain an uppercase letter
-Congratulations Tony Laroon. You have registered as a traveller.
+Please enter in your frequent flyer number: 
+Please enter in your frequent flyer points (0-1000000): 
+Congratulations Shara Lee. You have registered as a frequent flyer.
 Please make a choice from the menu below:
 1. Login as a registered user.
 2. Register as a new user.
@@ -32,9 +34,9 @@ Please enter a choice between 1 and 3:
 Login Menu.
 Please enter in your email:
 Please enter in your password:
-Welcome back Tony Laroon.
+Welcome back Shara Lee.
 
-Traveller Menu.
+Frequent Flyer Menu.
 Please make a choice from the menu below:
 1. See my details.
 2. Change password.
@@ -43,11 +45,15 @@ Please make a choice from the menu below:
 5. See flight details.
 6. Logout.
 Please enter a choice between 1 and 6:
-Please enter in your current password: 
-Please enter in your new password: 
-Password changed.
+Your details.
+Name: Shara Lee
+Age: 47
+Mobile phone number: 0478373750
+Email: shara@example.com
+Frequent flyer number: 123456
+Points: 500000
 
-Traveller Menu.
+Frequent Flyer Menu.
 Please make a choice from the menu below:
 1. See my details.
 2. Change password.
@@ -56,10 +62,5 @@ Please make a choice from the menu below:
 5. See flight details.
 6. Logout.
 Please enter a choice between 1 and 6:
-Please make a choice from the menu below:
-1. Login as a registered user.
-2. Register as a new user.
-3. Exit.
-Please enter a choice between 1 and 3:
-Login Menu.
-Please enter in your email:
+Please enter a choice between 1 and 6:
+Please enter in the arrival flight code: 

@@ -450,14 +450,14 @@ namespace BrisbaneAirportApp
 
             while (true)
             {
-                Console.WriteLine("Please enter in your value between 0 and 99:");
+                Console.WriteLine("Please enter in your age between 0 and 99:");
                 var a = Console.ReadLine();
                 if (int.TryParse(a, out age) && Validators.ValidAge(age))
                 {
 
                     break;
                 }
-                PrintError("Supplied value is invalid.");
+                PrintError("Supplied age is invalid.");
             }
 
 
