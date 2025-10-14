@@ -38,6 +38,14 @@ namespace BrisbaneAirportApp
         public string Login(string email, string password)
         { var u = _users.Get(email); if (u is null || !u.VerifyPassword(password)) throw new InvalidOperationException("Invalid credentials"); var token = Guid.NewGuid().ToString("N"); _sessions[token] = email; return token; }
 
+        public bool isExistUser(string token) => _sessions.ContainsKey(token);
+
+
+        public bool CheckPassword(string email, string password) => _users.Get(email)?.VerifyPassword(password) ?? false;
+
+        public bool isExistEmail(string email) => _users.Get(email) != null;
+
+
         public void Logout(string token) => _sessions.Remove(token);
         public BaseUser? CurrentUser(string token) => _sessions.TryGetValue(token, out var e) ? _users.Get(e) : null;
 

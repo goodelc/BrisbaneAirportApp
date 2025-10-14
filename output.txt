@@ -7,21 +7,27 @@ Please make a choice from the menu below:
 2. Register as a new user.
 3. Exit.
 Please enter a choice between 1 and 3:
-
-Login Menu.
+Which user type would you like to register?
+1. A standard traveller.
+2. A frequent flyer.
+3. A flight manager.
+Please enter a choice between 1 and 3:
+Registering as a traveller.
+Please enter in your name:
+Please enter in your value between 0 and 99:
+Please enter in your mobile number:
 Please enter in your email:
 Please enter in your password:
-#####
-# Error- Invalid credentials
-# Please try again.
-#####
+Your password must:
+-be at least 8 characters long 
+-contain a number
+-contain a lowercase letter
+-contain an uppercase letter
+Congratulations Sam Bowes-Lyon. You have registered as a traveller.
 Please make a choice from the menu below:
 1. Login as a registered user.
 2. Register as a new user.
 3. Exit.
-Please enter a choice between 1 and 3:
-Please enter a choice between 1 and 3:
-Please enter a choice between 1 and 3:
 Please enter a choice between 1 and 3:
 Which user type would you like to register?
 1. A standard traveller.
@@ -30,22 +36,17 @@ Which user type would you like to register?
 Please enter a choice between 1 and 3:
 Registering as a traveller.
 Please enter in your name:
-Please enter in your age between 0 and 99:
+Please enter in your value between 0 and 99:
 Please enter in your mobile number:
+Please enter in your email:
+#####
+# Error - Email already registered.
+# Please try again.
+#####
 Please enter in your email:
 Please enter in your password:
 Your password must:
--be at least 8 characters long
--contain a number
--contain a lowercase letter
--contain an uppercase letter
-#####
-# Error- Supplied password is invalid.
-# Please try again.
-#####
-Please enter in your password:
-Your password must:
--be at least 8 characters long
+-be at least 8 characters long 
 -contain a number
 -contain a lowercase letter
 -contain an uppercase letter

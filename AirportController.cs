@@ -23,10 +23,10 @@ namespace BrisbaneAirportApp
 
             while (true)
             {
-            Console.WriteLine("Please make a choice from the menu below:");
-            Console.WriteLine("1. Login as a registered user.");
-            Console.WriteLine("2. Register as a new user.");
-            Console.WriteLine("3. Exit.");
+                Console.WriteLine("Please make a choice from the menu below:");
+                Console.WriteLine("1. Login as a registered user.");
+                Console.WriteLine("2. Register as a new user.");
+                Console.WriteLine("3. Exit.");
                 var mainChoice = AskChoice("Please enter a choice between 1 and 3:", 1, 3);
                 if (mainChoice == 1)
                     LoginFlow();
@@ -61,14 +61,53 @@ namespace BrisbaneAirportApp
 
         private void LoginFlow()
         {
+            var email = "";
+            var pwd = "";
+
             Console.WriteLine("Login Menu.");
-            Console.WriteLine("Please enter in your email:");
-            var email = ReadNonEmpty();
-            Console.WriteLine("Please enter in your password:");
-            var pwd = ReadNonEmpty();
+            while (true)
+            {
+                Console.WriteLine("Please enter in your email:");
+                email = ReadNonEmpty();
+                if (Validators.ValidEmail(email))
+                {
+                    if (_auth.isExistEmail(email))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        PrintError("Email is not registered.");
+                    }
+                }
+                PrintError("Supplied email is invalid.");
+            }
+
+            while (true)
+            {
+                Console.WriteLine("Please enter in your password:");
+                pwd = ReadNonEmpty();
+                if (Validators.ValidPassword(pwd))
+                {
+
+                    if (_auth.CheckPassword(email, pwd))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        PrintError("Incorrect Password.");
+
+                    }
+                    PrintError("Supplied password is invalid.");
+                }
+            }
+
 
             try
             {
+
+
                 _token = _auth.Login(email, pwd);
                 var u = _auth.CurrentUser(_token)!;
                 Console.WriteLine($"Welcome back {u.Name}.");
@@ -135,15 +174,15 @@ namespace BrisbaneAirportApp
         {
             while (true)
             {
-            Console.WriteLine();
-            Console.WriteLine("Traveller Menu.");
-            Console.WriteLine("Please make a choice from the menu below:");
-            Console.WriteLine("1. See my details.");
-            Console.WriteLine("2. Change password.");
-            Console.WriteLine("3. Book an arrival flight.");
-            Console.WriteLine("4. Book a departure flight.");
-            Console.WriteLine("5. See flight details.");
-            Console.WriteLine("6. Logout.");
+                Console.WriteLine();
+                Console.WriteLine("Traveller Menu.");
+                Console.WriteLine("Please make a choice from the menu below:");
+                Console.WriteLine("1. See my details.");
+                Console.WriteLine("2. Change password.");
+                Console.WriteLine("3. Book an arrival flight.");
+                Console.WriteLine("4. Book a departure flight.");
+                Console.WriteLine("5. See flight details.");
+                Console.WriteLine("6. Logout.");
                 var c = AskChoice("Please enter a choice between 1 and 6:", 1, 6);
 
                 switch (c)
@@ -163,14 +202,14 @@ namespace BrisbaneAirportApp
             while (true)
             {
                 Console.WriteLine();
-            Console.WriteLine("Frequent Flyer Menu.");
-            Console.WriteLine("Please make a choice from the menu below:");
-            Console.WriteLine("1. See my details.");
-            Console.WriteLine("2. Change password.");
-            Console.WriteLine("3. Book an arrival flight.");
-            Console.WriteLine("4. Book a departure flight.");
-            Console.WriteLine("5. See flight details.");
-            Console.WriteLine("6. Logout.");
+                Console.WriteLine("Frequent Flyer Menu.");
+                Console.WriteLine("Please make a choice from the menu below:");
+                Console.WriteLine("1. See my details.");
+                Console.WriteLine("2. Change password.");
+                Console.WriteLine("3. Book an arrival flight.");
+                Console.WriteLine("4. Book a departure flight.");
+                Console.WriteLine("5. See flight details.");
+                Console.WriteLine("6. Logout.");
                 var c = AskChoice("Please enter a choice between 1 and 6:", 1, 6);
 
                 switch (c)
@@ -190,15 +229,15 @@ namespace BrisbaneAirportApp
             while (true)
             {
                 Console.WriteLine();
-            Console.WriteLine("Flight Manager Menu.");
-            Console.WriteLine("Please make a choice from the menu below:");
-            Console.WriteLine("1. See my details.");
-            Console.WriteLine("2. Change password.");
-            Console.WriteLine("3. Add an arrival flight.");
-            Console.WriteLine("4. Add a departure flight.");
-            Console.WriteLine("5. See flight details.");
-            Console.WriteLine("6. Delay an arrival flight.");
-            Console.WriteLine("7. Logout.");
+                Console.WriteLine("Flight Manager Menu.");
+                Console.WriteLine("Please make a choice from the menu below:");
+                Console.WriteLine("1. See my details.");
+                Console.WriteLine("2. Change password.");
+                Console.WriteLine("3. Add an arrival flight.");
+                Console.WriteLine("4. Add a departure flight.");
+                Console.WriteLine("5. See flight details.");
+                Console.WriteLine("6. Delay an arrival flight.");
+                Console.WriteLine("7. Logout.");
                 var c = AskChoice("Please enter a choice between 1 and 7:", 1, 7);
 
                 switch (c)
@@ -354,7 +393,7 @@ namespace BrisbaneAirportApp
         {
             if (_token != null) _auth.Logout(_token);
             _token = null;
-            Console.WriteLine("Logout.");
+            // Console.WriteLine("Logout.");
         }
 
         // ========== Helpers ==========
@@ -369,7 +408,7 @@ namespace BrisbaneAirportApp
         private static void PrintError(string msg)
         {
             Console.WriteLine("#####");
-            Console.WriteLine($"# Error- {msg}");
+            Console.WriteLine($"# Error - {msg}");
             Console.WriteLine("# Please try again.");
             Console.WriteLine("#####");
 
@@ -378,7 +417,7 @@ namespace BrisbaneAirportApp
         private static void PrintPasswordRules()
         {
             Console.WriteLine("Your password must:");
-            Console.WriteLine("-be at least 8 characters long");
+            Console.WriteLine("-be at least 8 characters long ");
             Console.WriteLine("-contain a number");
             Console.WriteLine("-contain a lowercase letter");
             Console.WriteLine("-contain an uppercase letter");
@@ -395,21 +434,48 @@ namespace BrisbaneAirportApp
             }
         }
 
-        private static (string name, int age, string mobile, string email, string password) AskUserBasics()
+        private (string name, int age, string mobile, string email, string password) AskUserBasics()
         {
             string name, mobile, email, pwd; int age;
 
-            while (true) { Console.WriteLine("Please enter in your name:");    name = ReadNonEmpty(); if (Validators.ValidName(name)) break; PrintError("Supplied name is invalid."); }
+            while (true) { Console.WriteLine("Please enter in your name:"); name = ReadNonEmpty(); if (Validators.ValidName(name)) break; PrintError("Supplied name is invalid."); }
 
-            
-            while (true) { Console.WriteLine("Please enter in your age between 0 and 99:"); var a = Console.ReadLine(); if (int.TryParse(a, out age) && Validators.ValidAge(age)) break; PrintError("Supplied value is invalid."); }
 
-            
+            while (true)
+            {
+                Console.WriteLine("Please enter in your value between 0 and 99:");
+                var a = Console.ReadLine();
+                if (int.TryParse(a, out age) && Validators.ValidAge(age))
+                {
+
+                    break;
+                }
+                PrintError("Supplied value is invalid.");
+            }
+
+
             while (true) { Console.WriteLine("Please enter in your mobile number:"); mobile = ReadNonEmpty(); if (Validators.ValidMobile(mobile)) break; PrintError("Supplied mobile number is invalid."); }
 
-            while (true) { Console.WriteLine("Please enter in your email:");  email = ReadNonEmpty(); if (Validators.ValidEmail(email)) break; PrintError("Supplied email is invalid."); }
+            while (true)
+            {
+                Console.WriteLine("Please enter in your email:");
+                email = ReadNonEmpty();
+                if (!Validators.ValidEmail(email))
+                {
 
-            while (true) { Console.WriteLine("Please enter in your password:");  PrintPasswordRules(); pwd = ReadNonEmpty(); if (Validators.ValidPassword(pwd)) break; PrintError("Supplied password is invalid."); }
+                    PrintError("Supplied email is invalid.");
+                    continue;
+                }
+
+                if (_auth.isExistEmail(email))
+                {
+                    PrintError("Email already registered.");
+                    continue;
+                }
+                break;
+            }
+
+            while (true) { Console.WriteLine("Please enter in your password:"); PrintPasswordRules(); pwd = ReadNonEmpty(); if (Validators.ValidPassword(pwd)) break; PrintError("Supplied password is invalid."); }
 
             return (name, age, mobile, email, pwd);
         }
@@ -430,7 +496,7 @@ namespace BrisbaneAirportApp
             while (true)
             {
                 var s = Console.ReadLine() ?? "";
-                s = s.Trim();
+                //s = s.Trim();
                 if (!string.IsNullOrEmpty(s)) return s;
             }
         }
@@ -463,7 +529,7 @@ namespace BrisbaneAirportApp
             var directionText = t.Direction == Direction.ARRIVAL ? "ARRIVAL" : "DEPARTURE";
             var timeLabel = t.Direction == Direction.ARRIVAL ? "Arrival Time" : "Departure Time";
             var cityLabel = t.Direction == Direction.ARRIVAL ? "Departure City" : "Arrival City";
-            
+
             return $"========== Ticket Information ==========\n" +
                    $"Ticket ID: {t.TicketId}\n" +
                    $"Flight Code: {t.FlightCode}\n" +
