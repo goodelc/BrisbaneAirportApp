@@ -80,7 +80,11 @@ namespace BrisbaneAirportApp
                         PrintError("Email is not registered.");
                     }
                 }
-                PrintError("Supplied email is invalid.");
+                else
+                {
+
+                    PrintError("Supplied email is invalid.");
+                }
             }
 
             while (true)
@@ -99,6 +103,9 @@ namespace BrisbaneAirportApp
                         PrintError("Incorrect Password.");
 
                     }
+                }
+                else
+                {
                     PrintError("Supplied password is invalid.");
                 }
             }
@@ -139,7 +146,7 @@ namespace BrisbaneAirportApp
             string ff;
             while (true)
             {
-                Console.Write("Please enter in your frequent flyer number: ");
+                Console.WriteLine("Please enter in your frequent flyer number: ");
                 ff = ReadNonEmpty();
                 if (int.TryParse(ff, out var n) && Validators.ValidFFNumber(n)) break;
                 PrintError("Supplied frequent flyer number is invalid.");
@@ -306,10 +313,10 @@ namespace BrisbaneAirportApp
 
         private void ChangePasswordFlow(string email)
         {
-            Console.Write("Please enter in your old password: ");
+            Console.WriteLine("Please enter in your current password: ");
             var oldp = ReadNonEmpty();
-            PrintPasswordRules();
-            Console.Write("Please enter in your new password: ");
+            //PrintPasswordRules();
+            Console.WriteLine("Please enter in your new password: ");
             var newp = ReadPasswordLoop();
             try
             {
@@ -505,7 +512,7 @@ namespace BrisbaneAirportApp
         {
             while (true)
             {
-                Console.Write(label);
+                Console.WriteLine(label);
                 var s = Console.ReadLine()?.Trim() ?? "";
                 if (int.TryParse(s, out var v) && v >= min && v <= max) return v;
                 PrintError("Supplied number is invalid.");
