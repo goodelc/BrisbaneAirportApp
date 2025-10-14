@@ -110,8 +110,17 @@ namespace BrisbaneAirportApp
 
         public override string ToString()
         {
-            return $"{Direction,-9} {FlightCode,-8} {Airline,-10} plane={PlaneId,-6} other_city={OtherCity,-12} " +
-                   $"time={TimeEffective().ToString(AppConsts.DateTimeFormat)} status={Status} delay={DelayMinutes}m";
+            var statusText = Status == FlightStatus.DELAYED ? "DELAYED" : "SCHEDULED";
+            var timeStr = TimeEffective().ToString("yyyy-MM-dd HH:mm");
+            var delayStr = DelayMinutes > 0 ? $" (delayed {DelayMinutes} minutes)" : "";
+            
+            return $"Flight Code: {FlightCode}\n" +
+                   $"Airline: {Airline}\n" +
+                   $"Aircraft: {PlaneId}\n" +
+                   $"{(Direction == Direction.ARRIVAL ? "Departure City" : "Arrival City")}: {OtherCity}\n" +
+                   $"{(Direction == Direction.ARRIVAL ? "Arrival Time" : "Departure Time")}: {timeStr}{delayStr}\n" +
+                   $"Status: {statusText}\n" +
+                   $"Direction: {(Direction == Direction.ARRIVAL ? "ARRIVAL" : "DEPARTURE")}";
         }
     }
 
@@ -136,6 +145,72 @@ namespace BrisbaneAirportApp
             OtherCity = otherCity;
             TimeString = time.ToString(AppConsts.DateTimeFormat);
             PointsEarned = points;
+        }
+    }
+
+    public class Airport
+    {
+        public string Name { get; }
+        public string Country { get; }
+        public string City { get; }
+        public double Longitude { get; }
+        public double Latitude { get; }
+
+        public Airport(string name, string country, string city, double longitude, double latitude)
+        {
+            Name = name;
+            Country = country;
+            City = city;
+            Longitude = longitude;
+            Latitude = latitude;
+        }
+
+        public override string ToString()
+        {
+            return $"Airport Name: {Name}\n" +
+                   $"Country: {Country}\n" +
+                   $"City: {City}\n" +
+                   $"Coordinates: {Longitude:F3} {Latitude:F3}";
+        }
+    }
+
+    public class Airline
+    {
+        public string Name { get; }
+        public string Airport1 { get; }
+        public string Airport2 { get; }
+        public double Length { get; }
+        public List<Point> Route { get; }
+
+        public Airline(string name, string airport1, string airport2, double length, List<Point> route)
+        {
+            Name = name;
+            Airport1 = airport1;
+            Airport2 = airport2;
+            Length = length;
+            Route = route;
+        }
+
+        public override string ToString()
+        {
+            var routeStr = string.Join(" -> ", Route.Select(p => $"({p.Longitude:F3}, {p.Latitude:F3})"));
+            return $"Route Name: {Name}\n" +
+                   $"Departure Airport: {Airport1}\n" +
+                   $"Arrival Airport: {Airport2}\n" +
+                   $"Route Length: {Length:F2} km\n" +
+                   $"Route Path: {routeStr}";
+        }
+    }
+
+    public class Point
+    {
+        public double Longitude { get; }
+        public double Latitude { get; }
+
+        public Point(double longitude, double latitude)
+        {
+            Longitude = longitude;
+            Latitude = latitude;
         }
     }
 }

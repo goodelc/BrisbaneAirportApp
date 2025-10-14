@@ -16,7 +16,7 @@ namespace BrisbaneAirportApp
             var ui = new CmdLineUI();
             var menu = new AirportMenu(ui);
 
-            var app = new AirportController(auth, svc, menu);
+            var app = new AirportController(auth, svc);
             app.Run();
         }
     }
