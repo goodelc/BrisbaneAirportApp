@@ -61,11 +61,10 @@ namespace BrisbaneAirportApp
 
         private void LoginFlow()
         {
-            Console.WriteLine();
             Console.WriteLine("Login Menu.");
-            Console.Write("Please enter in your email: ");
+            Console.WriteLine("Please enter in your email:");
             var email = ReadNonEmpty();
-            Console.Write("Please enter in your password: ");
+            Console.WriteLine("Please enter in your password:");
             var pwd = ReadNonEmpty();
 
             try
@@ -371,8 +370,9 @@ namespace BrisbaneAirportApp
         {
             Console.WriteLine("#####");
             Console.WriteLine($"# Error- {msg}");
-            Console.WriteLine("#####");
             Console.WriteLine("# Please try again.");
+            Console.WriteLine("#####");
+
         }
 
         private static void PrintPasswordRules()
@@ -399,21 +399,17 @@ namespace BrisbaneAirportApp
         {
             string name, mobile, email, pwd; int age;
 
-            Console.WriteLine("Please enter in your name: ");
-            while (true) { name = ReadNonEmpty(); if (Validators.ValidName(name)) break; PrintError("Supplied name is invalid."); }
+            while (true) { Console.WriteLine("Please enter in your name:");    name = ReadNonEmpty(); if (Validators.ValidName(name)) break; PrintError("Supplied name is invalid."); }
 
-            Console.WriteLine("Please enter in your age between 0 and 99: ");
-            while (true) { var a = Console.ReadLine(); if (int.TryParse(a, out age) && Validators.ValidAge(age)) break; PrintError("Supplied age is invalid."); }
+            
+            while (true) { Console.WriteLine("Please enter in your age between 0 and 99:"); var a = Console.ReadLine(); if (int.TryParse(a, out age) && Validators.ValidAge(age)) break; PrintError("Supplied value is invalid."); }
 
-            Console.WriteLine("Please enter in your mobile number: ");
-            while (true) { mobile = ReadNonEmpty(); if (Validators.ValidMobile(mobile)) break; PrintError("Supplied mobile number is invalid."); }
+            
+            while (true) { Console.WriteLine("Please enter in your mobile number:"); mobile = ReadNonEmpty(); if (Validators.ValidMobile(mobile)) break; PrintError("Supplied mobile number is invalid."); }
 
-            Console.WriteLine("Please enter in your email: ");
-            while (true) { email = ReadNonEmpty(); if (Validators.ValidEmail(email)) break; PrintError("Supplied email is invalid."); }
+            while (true) { Console.WriteLine("Please enter in your email:");  email = ReadNonEmpty(); if (Validators.ValidEmail(email)) break; PrintError("Supplied email is invalid."); }
 
-            PrintPasswordRules();
-            Console.WriteLine("Please enter in your password: ");
-            while (true) { pwd = ReadNonEmpty(); if (Validators.ValidPassword(pwd)) break; PrintError("Supplied password is invalid."); }
+            while (true) { Console.WriteLine("Please enter in your password:");  PrintPasswordRules(); pwd = ReadNonEmpty(); if (Validators.ValidPassword(pwd)) break; PrintError("Supplied password is invalid."); }
 
             return (name, age, mobile, email, pwd);
         }
