@@ -330,7 +330,7 @@ namespace BrisbaneAirportApp
                 {
                     var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
                     var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
-                    Console.WriteLine($"Flight {f.Airline} operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.PlaneId}.");
+                    Console.WriteLine($"Flight {f.Airline}{f.FlightCode}{GetValue(f.Airline)}  operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.PlaneId}.");
                 }
             }
             else
@@ -345,7 +345,7 @@ namespace BrisbaneAirportApp
                 {
                     var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
                     var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
-                    Console.WriteLine($"Flight {f.FlightCode} operated by {airlineName} departing at {timeStr} to {f.OtherCity} on plane {f.PlaneId}.");
+                    Console.WriteLine($"Flight {f.Airline}{f.FlightCode}{GetValue(f.Airline)} operated by {airlineName} departing at {timeStr} to {f.OtherCity} on plane {f.PlaneId}.");
                 }
             }
             else
@@ -353,6 +353,16 @@ namespace BrisbaneAirportApp
                 Console.WriteLine("There are no departure flights.");
             }
         }
+
+
+        private string GetValue(string key)
+        {
+              var dic =  new Dictionary<string,string>
+            { {"JST","A" }, {"QFA","D" }, { "3","RXA" }, {"4","VOZ" }, {"5","FRE" } };
+            return dic[key];
+        }
+
+
 
         private void ChangePasswordFlow(BaseUser u)
         {

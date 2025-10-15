@@ -27,7 +27,7 @@ namespace BrisbaneAirportApp
 
         public static readonly Dictionary<string, string> CityPointsList = new()
         {
-            {"1","dasa" },
+            {"1","Sydney" },
             {"2","Melbourne" },
             {"3","Rockhampton" },
             {"4","Adelaide" },
