@@ -52,8 +52,10 @@ namespace BrisbaneAirportApp
         public static bool ValidFFNumber(int n) => n >= 100000 && n <= 999999;
         public static bool ValidFFPoints(int n) => n >= 0 && n <= 1_000_000;
         public static bool ValidAirlineCode(string code) => Array.Exists(AppConsts.AirlineCodes, c => c == code);
+        public static bool ValidAirlineCode(int code) => code>=0 && code < AppConsts.AirlineCodes.Length;
         public static bool ValidCity(string city) => AppConsts.CityPoints.ContainsKey(city);
         public static bool ValidFlightId(string id) => FlightIdRx.IsMatch(id) && ValidAirlineCode(id[..3]);
+        public static bool ValidFlightId(int id) => true;
         public static bool ValidPlaneId(string id) => PlaneIdRx.IsMatch(id) && ValidAirlineCode(id[..3]);
         public static bool ValidSeat(string seat) => SeatRx.IsMatch(seat);
     }

@@ -14,7 +14,7 @@ Which user type would you like to register?
 Please enter a choice between 1 and 3:
 Registering as a frequent flyer.
 Please enter in your name:
-Please enter in your value between 0 and 99:
+Please enter in your age between 0 and 99:
 Please enter in your mobile number:
 Please enter in your email:
 Please enter in your password:
@@ -23,8 +23,8 @@ Your password must:
 -contain a number
 -contain a lowercase letter
 -contain an uppercase letter
-Please enter in your frequent flyer number: 
-Please enter in your frequent flyer points (0-1000000): 
+Please enter in your frequent flyer number between 100000 and 999999: 
+Please enter in your current frequent flyer points between 0 and 1000000 : 
 Congratulations Shara Lee. You have registered as a frequent flyer.
 Please make a choice from the menu below:
 1. Login as a registered user.
@@ -62,5 +62,14 @@ Please make a choice from the menu below:
 5. See flight details.
 6. Logout.
 Please enter a choice between 1 and 6:
+
+Frequent Flyer Menu.
+Please make a choice from the menu below:
+1. See my details.
+2. Change password.
+3. Book an arrival flight.
+4. Book a departure flight.
+5. See flight details.
+6. Logout.
 Please enter a choice between 1 and 6:
 Please enter in the arrival flight code: 

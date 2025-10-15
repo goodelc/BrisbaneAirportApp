@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
@@ -77,7 +78,7 @@ namespace BrisbaneAirportApp
                     }
                     else
                     {
-                        PrintError("Email is not registered.");
+                        PrintErrorWithTip("Email is not registered.");
                     }
                 }
                 else
@@ -100,7 +101,7 @@ namespace BrisbaneAirportApp
                     }
                     else
                     {
-                        PrintError("Incorrect Password.");
+                        PrintErrorWithTip("Incorrect Password.");
 
                     }
                 }
@@ -110,11 +111,8 @@ namespace BrisbaneAirportApp
                 }
             }
 
-
             try
             {
-
-
                 _token = _auth.Login(email, pwd);
                 var u = _auth.CurrentUser(_token)!;
                 Console.WriteLine($"Welcome back {u.Name}.");
@@ -146,13 +144,13 @@ namespace BrisbaneAirportApp
             string ff;
             while (true)
             {
-                Console.WriteLine("Please enter in your frequent flyer number between 100000 and 999999: ");
+                Console.WriteLine("Please enter in your frequent flyer number between 100000 and 999999:");
                 ff = ReadNonEmpty();
                 if (int.TryParse(ff, out var n) && Validators.ValidFFNumber(n)) break;
-                PrintError("Supplied frequent flyer number is invalid.");
+                PrintError("Supplied current frequent flyer points is invalid.");
             }
 
-            int pts = AskInt("Please enter in your current frequent flyer points between 0 and 1000000 : ", 0, 1_000_000);
+            int pts = AskInt("Please enter in your current frequent flyer points between 0 and 1000000:", 0, 1_000_000);
 
             _auth.RegisterFrequent(name, age, email, mobile, pwd, ff, pts);
             Console.WriteLine($"Congratulations {name}. You have registered as a frequent flyer.");
@@ -166,7 +164,7 @@ namespace BrisbaneAirportApp
             string staff;
             while (true)
             {
-                Console.Write("Please enter in your staff id: ");
+                Console.WriteLine("Please enter in your staff id between 1000 and 9000:");
                 staff = ReadNonEmpty();
                 if (int.TryParse(staff, out var s) && s >= 1000 && s <= 9000) break;
                 PrintError("Supplied staff id is invalid.");
@@ -246,7 +244,6 @@ namespace BrisbaneAirportApp
                 Console.WriteLine("6. Delay an arrival flight.");
                 Console.WriteLine("7. Logout.");
                 var c = AskChoice("Please enter a choice between 1 and 7:", 1, 7);
-
                 switch (c)
                 {
                     case 1: ShowMe(u); break;
@@ -314,7 +311,7 @@ namespace BrisbaneAirportApp
         private void ChangePasswordFlow(string email)
         {
             Console.WriteLine("Please enter your current password.");
-            var oldp = ReadNonEmpty();
+            var oldp = ReadLineAllowEmpty();
             //PrintPasswordRules();
             Console.WriteLine("Please enter your new password.");
             var newp = ReadPasswordLoop();
@@ -355,7 +352,7 @@ namespace BrisbaneAirportApp
             string airline, code, city, plane;
             DateTime when;
 
-            while (true) { Console.Write("Please enter in the airline code: "); airline = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidAirlineCode(airline)) break; PrintError("Supplied airline code is invalid."); }
+            while (true) { Console.Write("Please enter in the airline code: "); airline = ReadNonEmpty().ToUpperInvariant();  if (Validators.ValidAirlineCode(int.Parse(airline))) break; PrintError("Supplied airline code is invalid."); }
             while (true) { Console.Write("Please enter in the flight code: "); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
             while (true) { Console.Write(dir == Direction.ARRIVAL ? "Please enter in the departure city: " : "Please enter in the arrival city: "); city = ReadNonEmpty(); if (Validators.ValidCity(city)) break; PrintError("Supplied city is invalid."); }
             while (true) { Console.Write("Please enter in the plane id: "); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
@@ -418,7 +415,13 @@ namespace BrisbaneAirportApp
             Console.WriteLine($"# Error - {msg}");
             Console.WriteLine("# Please try again.");
             Console.WriteLine("#####");
+        }
 
+        private static void PrintErrorWithTip(string msg)
+        {
+            Console.WriteLine("#####");
+            Console.WriteLine($"# Error - {msg}");
+            Console.WriteLine("#####");
         }
 
         private static void PrintPasswordRules()
@@ -452,12 +455,21 @@ namespace BrisbaneAirportApp
             {
                 Console.WriteLine("Please enter in your age between 0 and 99:");
                 var a = Console.ReadLine();
-                if (int.TryParse(a, out age) && Validators.ValidAge(age))
+                if (int.TryParse(a, out age))
                 {
-
-                    break;
+                    if (Validators.ValidAge(age))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        PrintError("Supplied age is invalid.");
+                    }
                 }
-                PrintError("Supplied age is invalid.");
+                else
+                {
+                    PrintError("Supplied value is invalid.");
+                }
             }
 
 
@@ -482,18 +494,21 @@ namespace BrisbaneAirportApp
                 break;
             }
 
-            while (true) { Console.WriteLine("Please enter in your password:"); PrintPasswordRules(); pwd = ReadNonEmpty(); if (Validators.ValidPassword(pwd)) break; PrintError("Supplied password is invalid."); }
+            while (true) { Console.WriteLine("Please enter in your password:"); PrintPasswordRules(); pwd = ReadLineAllowEmpty(); if (Validators.ValidPassword(pwd)) break; PrintError("Supplied password is invalid."); }
 
             return (name, age, mobile, email, pwd);
         }
 
-        private static int AskChoice(string prompt, int lo, int hi)
+        private int AskChoice(string prompt, int lo, int hi)
         {
             while (true)
             {
                 Console.WriteLine(prompt);
                 var s = Console.ReadLine()?.Trim() ?? "";
-                if (int.TryParse(s, out var v) && v >= lo && v <= hi) return v;
+                if (int.TryParse(s, out var v) && v >= lo && v <= hi)
+                {
+                    return v;
+                }
                 // No error print here — Gradescope expects silent retry
             }
         }
@@ -504,8 +519,16 @@ namespace BrisbaneAirportApp
             {
                 var s = Console.ReadLine() ?? "";
                 //s = s.Trim();
-                if (!string.IsNullOrEmpty(s)) return s;
+                if (!string.IsNullOrEmpty(s))
+                    return s;
             }
+        }
+
+
+        private static string ReadLineAllowEmpty()
+        {
+            var s = Console.ReadLine();
+            return s ?? ""; // null 转为空字符串
         }
 
         private static int AskInt(string label, int min, int max)
