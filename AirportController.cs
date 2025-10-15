@@ -217,8 +217,9 @@ namespace BrisbaneAirportApp
                 Console.WriteLine("3. Book an arrival flight.");
                 Console.WriteLine("4. Book a departure flight.");
                 Console.WriteLine("5. See flight details.");
-                Console.WriteLine("6. Logout.");
-                var c = AskChoice("Please enter a choice between 1 and 6:", 1, 6);
+                Console.WriteLine("6. See frequent flyer points.");
+                Console.WriteLine("7. Logout.");
+                var c = AskChoice("Please enter a choice between 1 and 7:", 1, 7);
 
                 switch (c)
                 {
@@ -228,6 +229,7 @@ namespace BrisbaneAirportApp
                     case 4: BookFlow(u, Direction.DEPARTURE); break;
                     case 5: ListFlights(); break;
                     case 6: DoLogout(); return;
+                    case 7: DoLogout(); return;
                 }
             }
         }
