@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 
 namespace BrisbaneAirportApp
 {
@@ -238,12 +239,13 @@ namespace BrisbaneAirportApp
                 Console.WriteLine("Please make a choice from the menu below:");
                 Console.WriteLine("1. See my details.");
                 Console.WriteLine("2. Change password.");
-                Console.WriteLine("3. Add an arrival flight.");
-                Console.WriteLine("4. Add a departure flight.");
-                Console.WriteLine("5. See flight details.");
-                Console.WriteLine("6. Delay an arrival flight.");
-                Console.WriteLine("7. Logout.");
-                var c = AskChoice("Please enter a choice between 1 and 7:", 1, 7);
+                Console.WriteLine("3. Create an arrival flight.");
+                Console.WriteLine("4. Create a departure flight.");
+                Console.WriteLine("5. Delay an arrival flight.");
+                Console.WriteLine("6. Delay a departure flight.");
+                Console.WriteLine("7. see the details of all flights.");
+                Console.WriteLine("8. Logout.");
+                var c = AskChoice("Please enter a choice between 1 and 8:", 1, 8);
                 switch (c)
                 {
                     case 1: ShowMe(u); break;
@@ -253,6 +255,7 @@ namespace BrisbaneAirportApp
                     case 5: ListFlights(); break;
                     case 6: DelayArrivalFlow(u); break;
                     case 7: DoLogout(); return;
+                    case 8: DoLogout(); return;
                 }
             }
         }
@@ -260,9 +263,9 @@ namespace BrisbaneAirportApp
         // ========== Actions ==========
         private void ShowMe(BaseUser u)
         {
-            Console.WriteLine("Your details.");
             if (u is FrequentFlyer ff)
             {
+            Console.WriteLine("Your details.");
                 Console.WriteLine($"Name: {ff.Name}");
                 Console.WriteLine($"Age: {ff.Age}");
                 Console.WriteLine($"Mobile phone number: {ff.Mobile}");
@@ -272,6 +275,10 @@ namespace BrisbaneAirportApp
             }
             else if (u is FlightManager fm)
             {
+                _svc.GetFlight();
+                Console.WriteLine("arrival Flights:");
+                Console.WriteLine($"Fligth {fm.airline}{code} on plane {airline}{plane}A has been added to the system.");
+
                 Console.WriteLine($"Name: {fm.Name}");
                 Console.WriteLine($"Age: {fm.Age}");
                 Console.WriteLine($"Mobile phone number: {fm.Mobile}");
@@ -349,22 +356,21 @@ namespace BrisbaneAirportApp
 
         private void AddFlightFlow(FlightManager m, Direction dir)
         {
-            return;
             string airline, code, city, plane;
             DateTime when;
 
-            while (true) { Console.Write("Please enter in the airline code: "); airline = ReadNonEmpty().ToUpperInvariant();  if (Validators.ValidAirlineCode(int.Parse(airline))) break; PrintError("Supplied airline code is invalid."); }
-            while (true) { Console.Write("Please enter in the flight code: "); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
-            while (true) { Console.Write(dir == Direction.ARRIVAL ? "Please enter in the departure city: " : "Please enter in the arrival city: "); city = ReadNonEmpty(); if (Validators.ValidCity(city)) break; PrintError("Supplied city is invalid."); }
-            while (true) { Console.Write("Please enter in the plane id: "); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
-            when = AskDateTime("Please enter in the scheduled time (yyyy-MM-dd HH:mm or yyyy-MM-ddTHH:mm): ");
+            while (true) { Console.WriteLine("Please enter in the airline:"); PrintAirline(); string airlineIndex = ReadNonEmpty().ToUpperInvariant(); airline = AppConsts.AirlineCodesDic[airlineIndex]; break; PrintError("Supplied airline code is invalid."); }
+            while (true) { Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departure city: " : "Please enter in the arrival city: "); PrintDepartingCity(); string cityIndex = ReadNonEmpty(); city = AppConsts.CityPointsList[cityIndex]; break; PrintError("Supplied city is invalid."); }
+            while (true) { Console.WriteLine("Please enter in the flight id between 100 and 900:"); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
+            while (true) { Console.WriteLine("Please enter in the plane id between 0 and 9:"); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
+            when = AskDateTime("Please enter in the arrival date and time in format HH:mm dd/MM/yyyy:");
 
             try
             {
                 if (dir == Direction.ARRIVAL)
                 {
                     _svc.RegisterArrival(m, airline, code, city, plane, when);
-                    Console.WriteLine("Arrival flight added.");
+                    Console.WriteLine($"Fligth {airline}{code} on plane {airline}{plane}A has been added to the system.");
                 }
                 else
                 {
@@ -377,6 +383,27 @@ namespace BrisbaneAirportApp
                 PrintError(ex.Message);
             }
         }
+
+
+        private void PrintAirline()
+        {
+            Console.WriteLine("1. Jetstar");
+            Console.WriteLine("2. Qants");
+            Console.WriteLine("3. Regional Express");
+            Console.WriteLine("4. Virgin");
+            Console.WriteLine("5. Fly Pelican");
+            Console.WriteLine("Please enter a choice between 1 and 5:");
+        }
+        private void PrintDepartingCity()
+        {
+            Console.WriteLine("1. Sydney");
+            Console.WriteLine("2. Melbourne");
+            Console.WriteLine("3. Rockhampton");
+            Console.WriteLine("4. Adelaide");
+            Console.WriteLine("5. Perth");
+            Console.WriteLine("Please enter a choice between 1 and 5:");
+        }
+
 
         private void DelayArrivalFlow(FlightManager m)
         {
@@ -547,7 +574,7 @@ namespace BrisbaneAirportApp
         {
             while (true)
             {
-                Console.Write(label);
+                Console.WriteLine(label);
                 var s = (Console.ReadLine() ?? "").Trim().Replace('T', ' ');
                 if (DateTime.TryParseExact(s, AppConsts.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
                     return dt;

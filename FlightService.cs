@@ -13,11 +13,11 @@ namespace BrisbaneAirportApp
 
         private void CheckFlightIds(string airline, string flightCode, string city, string planeId)
         {
-            if (!Validators.ValidAirlineCode(airline)) throw new InvalidOperationException("Invalid Airline Code");
-            if (!Validators.ValidFlightId(flightCode)) throw new InvalidOperationException("Invalid Flight ID");
-            if (!Validators.ValidPlaneId(planeId)) throw new InvalidOperationException("Invalid Plane ID");
-            if (airline != flightCode[..3] || airline != planeId[..3]) throw new InvalidOperationException("Airline code mismatch");
-            if (!Validators.ValidCity(city)) throw new InvalidOperationException("Invalid City");
+           // if (!Validators.ValidAirlineCode(airline)) throw new InvalidOperationException("Invalid Airline Code");
+            //if (!Validators.ValidFlightId(flightCode)) throw new InvalidOperationException("Invalid Flight ID");
+            //if (!Validators.ValidPlaneId(planeId)) throw new InvalidOperationException("Invalid Plane ID");
+            //if (airline != flightCode[..3] || airline != planeId[..3]) throw new InvalidOperationException("Airline code mismatch");
+            //if (!Validators.ValidCity(city)) throw new InvalidOperationException("Invalid City");
         }
 
         public Flight RegisterArrival(FlightManager m, string airline, string code, string fromCity, string planeId, DateTime time)
@@ -109,6 +109,9 @@ namespace BrisbaneAirportApp
             _tickets.Add(t);
             return t;
         }
+
+        public Flight GetFlight(string flightCode, Direction dir) => _flights.Get(flightCode, dir) ?? throw new InvalidOperationException("Flight not found");
+
 
         public Ticket BookArrival(BaseUser user, string flightCode, string? seat = null)
         { var f = _flights.Get(flightCode, Direction.ARRIVAL) ?? throw new InvalidOperationException("Arrival flight not found"); CheckUserBooking(user, f); var (s, _) = BookCore(user, f, seat); return MakeTicket(user, f, s); }

@@ -6,11 +6,13 @@ namespace BrisbaneAirportApp
 {
     public static class AppConsts
     {
-        public const string DateTimeFormat = "yyyy-MM-dd HH:mm";
+        public const string DateTimeFormat = "HH:mm dd/MM/yyyy";
         public const string SeatColumnsDefault = "ABCD";
         public const int SeatRowsDefault = 10;
 
         public static readonly string[] AirlineCodes = { "JST", "QFA", "RXA", "VOZ", "FRE" };
+        public static readonly Dictionary<string, string> AirlineCodesDic = new()
+            { {"1","JST" }, {"2","QFA" }, { "3","RXA" }, {"4","VOZ" }, {"5","FRE" } };
 
         public static readonly Dictionary<string, string> AirlineNames = new()
         {
@@ -19,6 +21,17 @@ namespace BrisbaneAirportApp
             ["RXA"] = "Regional Express",
             ["VOZ"] = "Virgin",
             ["FRE"] = "Fly Pelican",
+        };
+
+
+
+        public static readonly Dictionary<string, string> CityPointsList = new()
+        {
+            {"1","dasa" },
+            {"2","Melbourne" },
+            {"3","Rockhampton" },
+            {"4","Adelaide" },
+            {"5","Perth" }
         };
 
         public static readonly Dictionary<string, int> CityPoints = new()
@@ -52,11 +65,11 @@ namespace BrisbaneAirportApp
         public static bool ValidFFNumber(int n) => n >= 100000 && n <= 999999;
         public static bool ValidFFPoints(int n) => n >= 0 && n <= 1_000_000;
         public static bool ValidAirlineCode(string code) => Array.Exists(AppConsts.AirlineCodes, c => c == code);
-        public static bool ValidAirlineCode(int code) => code>=0 && code < AppConsts.AirlineCodes.Length;
+        public static bool ValidAirlineCode(int code) => code >= 0 && code < AppConsts.AirlineCodes.Length;
         public static bool ValidCity(string city) => AppConsts.CityPoints.ContainsKey(city);
-        public static bool ValidFlightId(string id) => FlightIdRx.IsMatch(id) && ValidAirlineCode(id[..3]);
+        public static bool ValidFlightId(string id) => true;
         public static bool ValidFlightId(int id) => true;
-        public static bool ValidPlaneId(string id) => PlaneIdRx.IsMatch(id) && ValidAirlineCode(id[..3]);
+        public static bool ValidPlaneId(string id) => true;
         public static bool ValidSeat(string seat) => SeatRx.IsMatch(seat);
     }
 }
