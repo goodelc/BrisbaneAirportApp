@@ -80,13 +80,11 @@ namespace BrisbaneAirportApp
                     else
                     {
                         PrintErrorWithTip("Email is not registered.");
-                        return;
                     }
                 }
                 else
                 {
                     PrintError("Supplied email is invalid.");
-                    return;
                 }
             }
 
@@ -358,19 +356,23 @@ namespace BrisbaneAirportApp
 
         private void ChangePasswordFlow(string email)
         {
-            Console.WriteLine("Please enter your current password.");
-            var oldp = ReadLineAllowEmpty();
-            //PrintPasswordRules();
-            Console.WriteLine("Please enter your new password.");
-            var newp = ReadPasswordLoop();
-            try
+            while (true)
             {
-                _auth.ChangePassword(email, oldp, newp);
-                //Console.WriteLine("Password changed.");
-            }
-            catch (Exception ex)
-            {
-                PrintError(ex.Message);
+                Console.WriteLine("Please enter your current password.");
+                var oldp = ReadLineAllowEmpty();
+                //PrintPasswordRules();
+                Console.WriteLine("Please enter your new password.");
+                var newp = ReadPasswordLoop();
+                try
+                {
+                    _auth.ChangePassword(email, oldp, newp);
+                    //Console.WriteLine("Password changed.");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    PrintError(ex.Message);
+                }
             }
         }
 
@@ -455,7 +457,7 @@ namespace BrisbaneAirportApp
         private void PrintAirline()
         {
             Console.WriteLine("1. Jetstar");
-            Console.WriteLine("2. Qants");
+            Console.WriteLine("2. Qantas");
             Console.WriteLine("3. Regional Express");
             Console.WriteLine("4. Virgin");
             Console.WriteLine("5. Fly Pelican");
