@@ -349,6 +349,7 @@ namespace BrisbaneAirportApp
 
         private void AddFlightFlow(FlightManager m, Direction dir)
         {
+            return;
             string airline, code, city, plane;
             DateTime when;
 
