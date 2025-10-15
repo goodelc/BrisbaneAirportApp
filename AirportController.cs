@@ -194,7 +194,7 @@ namespace BrisbaneAirportApp
                 switch (c)
                 {
                     case 1: ShowMe(u); break;
-                    case 2: ChangePasswordFlow(u.Email); break;
+                    case 2: ChangePasswordFlow(u); break;
                     case 3: BookFlow(u, Direction.ARRIVAL); break;
                     case 4: BookFlow(u, Direction.DEPARTURE); break;
                     case 5: ListFlights(); break;
@@ -222,7 +222,7 @@ namespace BrisbaneAirportApp
                 switch (c)
                 {
                     case 1: ShowMe(u); break;
-                    case 2: ChangePasswordFlow(u.Email); break;
+                    case 2: ChangePasswordFlow(u); break;
                     case 3: BookFlow(u, Direction.ARRIVAL); break;
                     case 4: BookFlow(u, Direction.DEPARTURE); break;
                     case 5: ListFlights(); break;
@@ -245,13 +245,13 @@ namespace BrisbaneAirportApp
                 Console.WriteLine("4. Create a departure flight.");
                 Console.WriteLine("5. Delay an arrival flight.");
                 Console.WriteLine("6. Delay a departure flight.");
-                Console.WriteLine("7. see the details of all flights.");
+                Console.WriteLine("7. See the details of all flights.");
                 Console.WriteLine("8. Logout.");
                 var c = AskChoice("Please enter a choice between 1 and 8:", 1, 8);
                 switch (c)
                 {
                     case 1: ShowMe(u); break;
-                    case 2: ChangePasswordFlow(u.Email); break;
+                    case 2: ChangePasswordFlow(u); break;
                     case 3: AddFlightFlow(u, Direction.ARRIVAL); break;
                     case 4: AddFlightFlow(u, Direction.DEPARTURE); break;
                     case 5: DelayArrivalFlow(u); break;
@@ -273,7 +273,7 @@ namespace BrisbaneAirportApp
                 Console.WriteLine($"Mobile phone number: {ff.Mobile}");
                 Console.WriteLine($"Email: {ff.Email}");
                 Console.WriteLine($"Frequent flyer number: {ff.FFNumber}");
-                Console.WriteLine($"Frequent flyer points: {ff.Points}");
+                Console.WriteLine($"Frequent flyer points: {ff.Points.ToString("N0")}");
             }
             else if (u is FlightManager fm)
             {
@@ -330,7 +330,7 @@ namespace BrisbaneAirportApp
                 {
                     var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
                     var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
-                    Console.WriteLine($"Flight {f.FlightCode} operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.PlaneId}.");
+                    Console.WriteLine($"Flight {f.Airline} operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.PlaneId}.");
                 }
             }
             else
@@ -354,18 +354,22 @@ namespace BrisbaneAirportApp
             }
         }
 
-        private void ChangePasswordFlow(string email)
+        private void ChangePasswordFlow(BaseUser u)
         {
             while (true)
             {
                 Console.WriteLine("Please enter your current password.");
                 var oldp = ReadLineAllowEmpty();
+
+
+                if (!u.VerifyPassword(oldp)) PrintError("Entered password does not match existing password.");
+
                 //PrintPasswordRules();
                 Console.WriteLine("Please enter your new password.");
                 var newp = ReadPasswordLoop();
                 try
                 {
-                    _auth.ChangePassword(email, oldp, newp);
+                    _auth.ChangePassword(u.Email, oldp, newp);
                     //Console.WriteLine("Password changed.");
                     break;
                 }
@@ -432,14 +436,14 @@ namespace BrisbaneAirportApp
             }
             while (true) { Console.WriteLine("Please enter in your flight id between 100 and 900:"); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
             while (true) { Console.WriteLine("Please enter in your plane id between 0 and 9:"); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
-            when = AskDateTime("Please enter in the arrival date and time in the format HH:mm dd/MM/yyyy:");
+            when = AskDateTime(dir == Direction.ARRIVAL?"Please enter in the arrival date and time in the format HH:mm dd/MM/yyyy:": "Please enter in the departure date and time in the format HH:mm dd/MM/yyyy:");
 
             try
             {
                 if (dir == Direction.ARRIVAL)
                 {
                     _svc.RegisterArrival(m, airline, code, city, plane, when);
-                    Console.WriteLine($"Fligth {airline}{code} on plane {airline}{plane}A has been added to the system.");
+                    Console.WriteLine($"Flight {airline}{code} on plane {airline}{plane}A has been added to the system.");
                 }
                 else
                 {

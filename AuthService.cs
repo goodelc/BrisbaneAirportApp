@@ -50,6 +50,6 @@ namespace BrisbaneAirportApp
         public BaseUser? CurrentUser(string token) => _sessions.TryGetValue(token, out var e) ? _users.Get(e) : null;
 
         public void ChangePassword(string email, string oldPwd, string newPwd)
-        { var u = _users.Get(email) ?? throw new InvalidOperationException("No such user"); if (!u.VerifyPassword(oldPwd)) throw new InvalidOperationException("Invalid credentials"); if (!Validators.ValidPassword(newPwd)) throw new InvalidOperationException("Invalid Password"); u.SetPassword(newPwd); }
+        { var u = _users.Get(email) ?? throw new InvalidOperationException("No such user");if (!Validators.ValidPassword(newPwd)) throw new InvalidOperationException("Invalid Password"); if (!u.VerifyPassword(oldPwd)) throw new InvalidOperationException("Entered password does not match existing password."); u.SetPassword(newPwd); }
     }
 }
