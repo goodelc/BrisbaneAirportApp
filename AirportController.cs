@@ -252,9 +252,9 @@ namespace BrisbaneAirportApp
                     case 2: ChangePasswordFlow(u.Email); break;
                     case 3: AddFlightFlow(u, Direction.ARRIVAL); break;
                     case 4: AddFlightFlow(u, Direction.DEPARTURE); break;
-                    case 5: ListFlights(); break;
-                    case 6: DelayArrivalFlow(u); break;
-                    case 7: DoLogout(); return;
+                    case 5: DelayArrivalFlow(u); break;
+                    case 6: DelayDepartureFlow(u); break;
+                    case 7: ShowAllFlights(); break;
                     case 8: DoLogout(); return;
                 }
             }
@@ -275,15 +275,7 @@ namespace BrisbaneAirportApp
             }
             else if (u is FlightManager fm)
             {
-                _svc.GetFlight();
-                Console.WriteLine("arrival Flights:");
-                Console.WriteLine($"Fligth {fm.airline}{code} on plane {airline}{plane}A has been added to the system.");
-
-                Console.WriteLine($"Name: {fm.Name}");
-                Console.WriteLine($"Age: {fm.Age}");
-                Console.WriteLine($"Mobile phone number: {fm.Mobile}");
-                Console.WriteLine($"Email: {fm.Email}");
-                Console.WriteLine($"Staff id: {fm.StaffId}");
+                ShowAllFlights();
             }
             else
             {
@@ -313,6 +305,44 @@ namespace BrisbaneAirportApp
                     Console.WriteLine("------------------------");
             }
             Console.WriteLine("=======================================");
+        }
+
+        private void ShowAllFlights()
+        {
+            var flights = _svc.ListFlights().ToList();
+            var arrivalFlights = flights.Where(f => f.Direction == Direction.ARRIVAL).ToList();
+            var departureFlights = flights.Where(f => f.Direction == Direction.DEPARTURE).ToList();
+
+            Console.WriteLine();
+            Console.WriteLine("Arrival Flights:");
+            if (arrivalFlights.Any())
+            {
+                foreach (var f in arrivalFlights)
+                {
+                    var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
+                    var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
+                    Console.WriteLine($"Flight {f.FlightCode} operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.PlaneId}.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("There are no arrival flights.");
+            }
+
+            Console.WriteLine("Departure Flights:");
+            if (departureFlights.Any())
+            {
+                foreach (var f in departureFlights)
+                {
+                    var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
+                    var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
+                    Console.WriteLine($"Flight {f.FlightCode} operated by {airlineName} departing at {timeStr} to {f.OtherCity} on plane {f.PlaneId}.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("There are no departure flights.");
+            }
         }
 
         private void ChangePasswordFlow(string email)
@@ -414,6 +444,22 @@ namespace BrisbaneAirportApp
             {
                 _svc.DelayArrival(m, code, mins);
                 Console.WriteLine("Arrival delayed and linked departures adjusted.");
+            }
+            catch (Exception ex)
+            {
+                PrintError(ex.Message);
+            }
+        }
+
+        private void DelayDepartureFlow(FlightManager m)
+        {
+            Console.Write("Please enter in the departure flight code: ");
+            var code = ReadNonEmpty().ToUpperInvariant();
+            var mins = AskInt("Please enter in the delay minutes: ", 1, int.MaxValue);
+            try
+            {
+                _svc.DelayDeparture(m, code, mins);
+                Console.WriteLine("Departure delayed.");
             }
             catch (Exception ex)
             {

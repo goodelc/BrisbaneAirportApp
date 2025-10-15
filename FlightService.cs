@@ -133,6 +133,14 @@ namespace BrisbaneAirportApp
                 if (d.Status == FlightStatus.SCHEDULED) d.Status = FlightStatus.DELAYED;
             }
         }
+
+        public void DelayDeparture(FlightManager m, string flightCode, int minutes)
+        {
+            _ = m ?? throw new ArgumentNullException(nameof(m));
+            var f = _flights.Get(flightCode, Direction.DEPARTURE) ?? throw new InvalidOperationException("Departure flight not found");
+            f.Status = FlightStatus.DELAYED;
+            f.DelayMinutes += minutes;
+        }
     }
 
 }

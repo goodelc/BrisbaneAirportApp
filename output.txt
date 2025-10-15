@@ -1,3 +1,5 @@
+C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\AirportController.cs(392,210): warning CS0162: 检测到无法访问的代码 [C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\BrisbaneAirportApp.csproj]
+C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\AirportController.cs(393,258): warning CS0162: 检测到无法访问的代码 [C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\BrisbaneAirportApp.csproj]
 ==========================================
 =  Welcome to Brisbane Domestic Airport  =
 ==========================================
@@ -76,12 +78,11 @@ Please make a choice from the menu below:
 7. see the details of all flights.
 8. Logout.
 Please enter a choice between 1 and 8:
-Your details.
-Name: Rosa Chavez
-Age: 43
-Mobile phone number: 0494562389
-Email: rosa@example.com
-Staff id: 2500
+
+Arrival Flights:
+Flight 150 operated by Jetstar arriving at 12:00 25/12/2024 from dasa on plane 8.
+Departure Flights:
+There are no departure flights.
 
 Flight Manager Menu.
 Please make a choice from the menu below:
@@ -100,4 +101,3 @@ Please make a choice from the menu below:
 3. Exit.
 Please enter a choice between 1 and 3:
 Thank you. Safe travels.
-    
