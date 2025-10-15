@@ -150,10 +150,10 @@ namespace BrisbaneAirportApp
                 Console.WriteLine("Please enter in your frequent flyer number between 100000 and 999999:");
                 ff = ReadNonEmpty();
                 if (int.TryParse(ff, out var n) && Validators.ValidFFNumber(n)) break;
-                PrintError("Supplied current frequent flyer points is invalid.");
+                PrintError("Supplied frequent flyer number is invalid.");
             }
 
-            int pts = AskInt("Please enter in your current frequent flyer points between 0 and 1000000:", 0, 1_000_000);
+            int pts = AskIntNew("Please enter in your current frequent flyer points between 0 and 1000000:", 0, 1_000_000);
 
             _auth.RegisterFrequent(name, age, email, mobile, pwd, ff, pts);
             Console.WriteLine($"Congratulations {name}. You have registered as a frequent flyer.");
@@ -269,20 +269,27 @@ namespace BrisbaneAirportApp
         {
             if (u is FrequentFlyer ff)
             {
-            Console.WriteLine("Your details.");
+                Console.WriteLine("Your details.");
                 Console.WriteLine($"Name: {ff.Name}");
                 Console.WriteLine($"Age: {ff.Age}");
                 Console.WriteLine($"Mobile phone number: {ff.Mobile}");
                 Console.WriteLine($"Email: {ff.Email}");
                 Console.WriteLine($"Frequent flyer number: {ff.FFNumber}");
-                Console.WriteLine($"Points: {ff.Points}");
+                Console.WriteLine($"Frequent flyer points: {ff.Points}");
             }
             else if (u is FlightManager fm)
             {
-                ShowAllFlights();
+                Console.WriteLine("Your details.");
+                Console.WriteLine($"Name: {fm.Name}");
+                Console.WriteLine($"Age: {fm.Age}");
+                Console.WriteLine($"Mobile phone number: {fm.Mobile}");
+                Console.WriteLine($"Email: {fm.Email}");
+                Console.WriteLine($"Staff ID: {fm.StaffId}");
+                //ShowAllFlights();
             }
             else
             {
+                Console.WriteLine("Your details.");
                 Console.WriteLine($"Name: {u.Name}");
                 Console.WriteLine($"Age: {u.Age}");
                 Console.WriteLine($"Mobile phone number: {u.Mobile}");
@@ -371,9 +378,9 @@ namespace BrisbaneAirportApp
         {
             while (true)
             {
-                Console.Write(dir == Direction.ARRIVAL ? "Please enter in the arrival flight code: " : "Please enter in the departure flight code: ");
+                Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter in the arrival flight code: " : "Please enter in the departure flight code: ");
                 var code = ReadNonEmpty().ToUpperInvariant();
-                Console.Write("Please enter in your preferred seat (or press enter for auto): ");
+                Console.WriteLine("Please enter in your preferred seat (or press enter for auto): ");
                 var seatInput = Console.ReadLine();
 
                 try
@@ -399,7 +406,7 @@ namespace BrisbaneAirportApp
 
             while (true) 
             { 
-                Console.WriteLine("Please enter in the airline:"); 
+                Console.WriteLine("Please enter the airline:"); 
                 PrintAirline(); 
                 string airlineIndex = ReadNonEmpty().ToUpperInvariant(); 
                 if (AppConsts.AirlineCodesDic.ContainsKey(airlineIndex))
@@ -411,7 +418,7 @@ namespace BrisbaneAirportApp
             }
             while (true) 
             { 
-                Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departure city: " : "Please enter in the arrival city: "); 
+                Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departing city: " : "Please enter in the arrival city:"); 
                 PrintDepartingCity(); 
                 string cityIndex = ReadNonEmpty(); 
                 if (AppConsts.CityPointsList.ContainsKey(cityIndex))
@@ -421,9 +428,9 @@ namespace BrisbaneAirportApp
                 }
                 PrintError("Supplied city is invalid."); 
             }
-            while (true) { Console.WriteLine("Please enter in the flight id between 100 and 900:"); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
-            while (true) { Console.WriteLine("Please enter in the plane id between 0 and 9:"); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
-            when = AskDateTime("Please enter in the arrival date and time in format HH:mm dd/MM/yyyy:");
+            while (true) { Console.WriteLine("Please enter in your flight id between 100 and 900:"); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
+            while (true) { Console.WriteLine("Please enter in your plane id between 0 and 9:"); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
+            when = AskDateTime("Please enter in the arrival date and time in the format HH:mm dd/MM/yyyy:");
 
             try
             {
@@ -643,6 +650,17 @@ namespace BrisbaneAirportApp
                 var s = Console.ReadLine()?.Trim() ?? "";
                 if (int.TryParse(s, out var v) && v >= min && v <= max) return v;
                 PrintError("Supplied number is invalid.");
+            }
+        }
+
+        private static int AskIntNew(string label, int min, int max)
+        {
+            while (true)
+            {
+                Console.WriteLine(label);
+                var s = Console.ReadLine()?.Trim() ?? "";
+                if (int.TryParse(s, out var v) && v >= min && v <= max) return v;
+                PrintError("Supplied current frequent flyer points is invalid.");
             }
         }
 

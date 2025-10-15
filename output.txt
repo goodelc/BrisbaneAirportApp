@@ -12,7 +12,7 @@ Which user type would you like to register?
 2. A frequent flyer.
 3. A flight manager.
 Please enter a choice between 1 and 3:
-Registering as a flight manager.
+Registering as a traveller.
 Please enter in your name:
 Please enter in your age between 0 and 99:
 Please enter in your mobile number:
@@ -23,8 +23,7 @@ Your password must:
 -contain a number
 -contain a lowercase letter
 -contain an uppercase letter
-Please enter in your staff id between 1000 and 9000:
-Congratulations Rosa Chavez. You have registered as a flight manager.
+Congratulations Tony Laroon. You have registered as a traveller.
 Please make a choice from the menu below:
 1. Login as a registered user.
 2. Register as a new user.
@@ -33,36 +32,32 @@ Please enter a choice between 1 and 3:
 Login Menu.
 Please enter in your email:
 Please enter in your password:
-Welcome back Rosa Chavez.
+Welcome back Tony Laroon.
 
-Flight Manager Menu.
+Traveller Menu.
 Please make a choice from the menu below:
 1. See my details.
 2. Change password.
-3. Create an arrival flight.
-4. Create a departure flight.
-5. Delay an arrival flight.
-6. Delay a departure flight.
-7. see the details of all flights.
-8. Logout.
-Please enter a choice between 1 and 8:
+3. Book an arrival flight.
+4. Book a departure flight.
+5. See flight details.
+6. Logout.
+Please enter a choice between 1 and 6:
+Your details.
+Name: Tony Laroon
+Age: 25
+Mobile phone number: 0491373798
+Email: tony@example.com
 
-Arrival Flights:
-There are no arrival flights.
-Departure Flights:
-There are no departure flights.
-
-Flight Manager Menu.
+Traveller Menu.
 Please make a choice from the menu below:
 1. See my details.
 2. Change password.
-3. Create an arrival flight.
-4. Create a departure flight.
-5. Delay an arrival flight.
-6. Delay a departure flight.
-7. see the details of all flights.
-8. Logout.
-Please enter a choice between 1 and 8:
+3. Book an arrival flight.
+4. Book a departure flight.
+5. See flight details.
+6. Logout.
+Please enter a choice between 1 and 6:
 Please make a choice from the menu below:
 1. Login as a registered user.
 2. Register as a new user.
