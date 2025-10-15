@@ -48,7 +48,7 @@ Please enter your current password.
 # Error - Entered password does not match existing password.
 # Please try again.
 #####
-Please enter your new password.
+Please enter your current password.
 #####
 # Error - Entered password does not match existing password.
 # Please try again.

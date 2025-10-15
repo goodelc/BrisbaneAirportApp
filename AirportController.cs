@@ -330,7 +330,7 @@ namespace BrisbaneAirportApp
                 {
                     var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
                     var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
-                    Console.WriteLine($"Flight {f.Airline}{f.FlightCode}{GetValue(f.Airline)}  operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.PlaneId}.");
+                    Console.WriteLine($"Flight {f.Airline}{f.FlightCode} operated by {airlineName} arriving at {timeStr} from {f.OtherCity} on plane {f.Airline}{f.PlaneId}{GetValue(f.Airline)} .");
                 }
             }
             else
@@ -345,7 +345,7 @@ namespace BrisbaneAirportApp
                 {
                     var airlineName = AppConsts.AirlineNames.ContainsKey(f.Airline) ? AppConsts.AirlineNames[f.Airline] : f.Airline;
                     var timeStr = f.TimeEffective().ToString("HH:mm dd/MM/yyyy");
-                    Console.WriteLine($"Flight {f.Airline}{f.FlightCode}{GetValue(f.Airline)} operated by {airlineName} departing at {timeStr} to {f.OtherCity} on plane {f.PlaneId}.");
+                    Console.WriteLine($"Flight {f.Airline}{f.FlightCode} operated by {airlineName} departing at {timeStr} to {f.OtherCity} on plane {f.Airline}{f.PlaneId}{GetValue(f.Airline)} .");
                 }
             }
             else
@@ -357,7 +357,7 @@ namespace BrisbaneAirportApp
 
         private string GetValue(string key)
         {
-              var dic =  new Dictionary<string,string>
+            var dic = new Dictionary<string, string>
             { {"JST","A" }, {"QFA","D" }, { "3","RXA" }, {"4","VOZ" }, {"5","FRE" } };
             return dic[key];
         }
@@ -372,7 +372,12 @@ namespace BrisbaneAirportApp
                 var oldp = ReadLineAllowEmpty();
 
 
-                if (!u.VerifyPassword(oldp)) PrintError("Entered password does not match existing password.");
+                if (!u.VerifyPassword(oldp))
+                {
+
+                    PrintError("Entered password does not match existing password.");
+                    continue;
+                }
 
                 //PrintPasswordRules();
                 Console.WriteLine("Please enter your new password.");
@@ -420,45 +425,46 @@ namespace BrisbaneAirportApp
             string airline, code, city, plane;
             DateTime when;
 
-            while (true) 
-            { 
-                Console.WriteLine("Please enter the airline:"); 
-                PrintAirline(); 
-                string airlineIndex = ReadNonEmpty().ToUpperInvariant(); 
+            while (true)
+            {
+                Console.WriteLine("Please enter the airline:");
+                PrintAirline();
+                string airlineIndex = ReadNonEmpty().ToUpperInvariant();
                 if (AppConsts.AirlineCodesDic.ContainsKey(airlineIndex))
                 {
-                    airline = AppConsts.AirlineCodesDic[airlineIndex]; 
-                    break; 
+                    airline = AppConsts.AirlineCodesDic[airlineIndex];
+                    break;
                 }
-                PrintError("Supplied airline code is invalid."); 
+                PrintError("Supplied airline code is invalid.");
             }
-            while (true) 
-            { 
-                Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departing city: " : "Please enter in the arrival city:"); 
-                PrintDepartingCity(); 
-                string cityIndex = ReadNonEmpty(); 
+            while (true)
+            {
+                Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departing city:" : "Please enter the arrival city:");
+                PrintDepartingCity();
+                string cityIndex = ReadNonEmpty();
                 if (AppConsts.CityPointsList.ContainsKey(cityIndex))
                 {
-                    city = AppConsts.CityPointsList[cityIndex]; 
-                    break; 
+                    city = AppConsts.CityPointsList[cityIndex];
+                    break;
                 }
-                PrintError("Supplied city is invalid."); 
+                PrintError("Supplied city is invalid.");
             }
             while (true) { Console.WriteLine("Please enter in your flight id between 100 and 900:"); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
             while (true) { Console.WriteLine("Please enter in your plane id between 0 and 9:"); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
-            when = AskDateTime(dir == Direction.ARRIVAL?"Please enter in the arrival date and time in the format HH:mm dd/MM/yyyy:": "Please enter in the departure date and time in the format HH:mm dd/MM/yyyy:");
+            when = AskDateTime(dir == Direction.ARRIVAL ? "Please enter in the arrival date and time in the format HH:mm dd/MM/yyyy:" : "Please enter in the departure date and time in the format HH:mm dd/MM/yyyy:");
 
             try
             {
                 if (dir == Direction.ARRIVAL)
                 {
                     _svc.RegisterArrival(m, airline, code, city, plane, when);
-                    Console.WriteLine($"Flight {airline}{code} on plane {airline}{plane}A has been added to the system.");
+                    Console.WriteLine($"Flight {airline}{code} on plane {airline}{plane}{GetValue(airline)} has been added to the system.");
                 }
                 else
                 {
                     _svc.RegisterDeparture(m, airline, code, city, plane, when);
-                    Console.WriteLine("Departure flight added.");
+                    Console.WriteLine($"Flight {airline}{code} on plane {airline}{plane}{GetValue(airline)} has been added to the system.");
+                    //Console.WriteLine("Departure flight added.");
                 }
             }
             catch (Exception ex)
