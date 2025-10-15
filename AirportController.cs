@@ -80,12 +80,13 @@ namespace BrisbaneAirportApp
                     else
                     {
                         PrintErrorWithTip("Email is not registered.");
+                        return;
                     }
                 }
                 else
                 {
-
                     PrintError("Supplied email is invalid.");
+                    return;
                 }
             }
 
@@ -125,6 +126,7 @@ namespace BrisbaneAirportApp
             catch (Exception)
             {
                 PrintError("Invalid credentials");
+                return;
             }
         }
 
@@ -365,22 +367,26 @@ namespace BrisbaneAirportApp
 
         private void BookFlow(BaseUser user, Direction dir)
         {
-            Console.Write(dir == Direction.ARRIVAL ? "Please enter in the arrival flight code: " : "Please enter in the departure flight code: ");
-            var code = ReadNonEmpty().ToUpperInvariant();
-            Console.Write("Please enter in your preferred seat (or press enter for auto): ");
-            var seatInput = Console.ReadLine();
-
-            try
+            while (true)
             {
-                var t = dir == Direction.ARRIVAL
-                    ? _svc.BookArrival(user, code, string.IsNullOrWhiteSpace(seatInput) ? null : seatInput.Trim().ToUpperInvariant())
-                    : _svc.BookDeparture(user, code, string.IsNullOrWhiteSpace(seatInput) ? null : seatInput.Trim().ToUpperInvariant());
+                Console.Write(dir == Direction.ARRIVAL ? "Please enter in the arrival flight code: " : "Please enter in the departure flight code: ");
+                var code = ReadNonEmpty().ToUpperInvariant();
+                Console.Write("Please enter in your preferred seat (or press enter for auto): ");
+                var seatInput = Console.ReadLine();
 
-                Console.WriteLine(RenderTicket(t));
-            }
-            catch (Exception ex)
-            {
-                PrintError(ex.Message);
+                try
+                {
+                    var t = dir == Direction.ARRIVAL
+                        ? _svc.BookArrival(user, code, string.IsNullOrWhiteSpace(seatInput) ? null : seatInput.Trim().ToUpperInvariant())
+                        : _svc.BookDeparture(user, code, string.IsNullOrWhiteSpace(seatInput) ? null : seatInput.Trim().ToUpperInvariant());
+
+                    Console.WriteLine(RenderTicket(t));
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    PrintError(ex.Message);
+                }
             }
         }
 
@@ -389,8 +395,30 @@ namespace BrisbaneAirportApp
             string airline, code, city, plane;
             DateTime when;
 
-            while (true) { Console.WriteLine("Please enter in the airline:"); PrintAirline(); string airlineIndex = ReadNonEmpty().ToUpperInvariant(); airline = AppConsts.AirlineCodesDic[airlineIndex]; break; PrintError("Supplied airline code is invalid."); }
-            while (true) { Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departure city: " : "Please enter in the arrival city: "); PrintDepartingCity(); string cityIndex = ReadNonEmpty(); city = AppConsts.CityPointsList[cityIndex]; break; PrintError("Supplied city is invalid."); }
+            while (true) 
+            { 
+                Console.WriteLine("Please enter in the airline:"); 
+                PrintAirline(); 
+                string airlineIndex = ReadNonEmpty().ToUpperInvariant(); 
+                if (AppConsts.AirlineCodesDic.ContainsKey(airlineIndex))
+                {
+                    airline = AppConsts.AirlineCodesDic[airlineIndex]; 
+                    break; 
+                }
+                PrintError("Supplied airline code is invalid."); 
+            }
+            while (true) 
+            { 
+                Console.WriteLine(dir == Direction.ARRIVAL ? "Please enter the departure city: " : "Please enter in the arrival city: "); 
+                PrintDepartingCity(); 
+                string cityIndex = ReadNonEmpty(); 
+                if (AppConsts.CityPointsList.ContainsKey(cityIndex))
+                {
+                    city = AppConsts.CityPointsList[cityIndex]; 
+                    break; 
+                }
+                PrintError("Supplied city is invalid."); 
+            }
             while (true) { Console.WriteLine("Please enter in the flight id between 100 and 900:"); code = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidFlightId(code)) break; PrintError("Supplied flight code is invalid."); }
             while (true) { Console.WriteLine("Please enter in the plane id between 0 and 9:"); plane = ReadNonEmpty().ToUpperInvariant(); if (Validators.ValidPlaneId(plane)) break; PrintError("Supplied plane id is invalid."); }
             when = AskDateTime("Please enter in the arrival date and time in format HH:mm dd/MM/yyyy:");

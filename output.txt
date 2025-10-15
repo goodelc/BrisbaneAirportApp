@@ -1,5 +1,3 @@
-C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\AirportController.cs(392,210): warning CS0162: 检测到无法访问的代码 [C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\BrisbaneAirportApp.csproj]
-C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\AirportController.cs(393,258): warning CS0162: 检测到无法访问的代码 [C:\Users\18393\Desktop\bussiness\BrisbaneAirportApp\BrisbaneAirportApp\BrisbaneAirportApp.csproj]
 ==========================================
 =  Welcome to Brisbane Domestic Airport  =
 ==========================================
@@ -14,7 +12,7 @@ Which user type would you like to register?
 2. A frequent flyer.
 3. A flight manager.
 Please enter a choice between 1 and 3:
-Registering as a flight manager.
+Registering as a frequent flyer.
 Please enter in your name:
 Please enter in your age between 0 and 99:
 Please enter in your mobile number:
@@ -25,8 +23,9 @@ Your password must:
 -contain a number
 -contain a lowercase letter
 -contain an uppercase letter
-Please enter in your staff id between 1000 and 9000:
-Congratulations Rosa Chavez. You have registered as a flight manager.
+Please enter in your frequent flyer number between 100000 and 999999:
+Please enter in your current frequent flyer points between 0 and 1000000:
+Congratulations Shara Lee. You have registered as a frequent flyer.
 Please make a choice from the menu below:
 1. Login as a registered user.
 2. Register as a new user.
@@ -35,69 +34,33 @@ Please enter a choice between 1 and 3:
 Login Menu.
 Please enter in your email:
 Please enter in your password:
-Welcome back Rosa Chavez.
+Welcome back Shara Lee.
 
-Flight Manager Menu.
+Frequent Flyer Menu.
 Please make a choice from the menu below:
 1. See my details.
 2. Change password.
-3. Create an arrival flight.
-4. Create a departure flight.
-5. Delay an arrival flight.
-6. Delay a departure flight.
-7. see the details of all flights.
-8. Logout.
-Please enter a choice between 1 and 8:
-Please enter in the airline:
-1. Jetstar
-2. Qants
-3. Regional Express
-4. Virgin
-5. Fly Pelican
-Please enter a choice between 1 and 5:
-Please enter the departure city: 
-1. Sydney
-2. Melbourne
-3. Rockhampton
-4. Adelaide
-5. Perth
-Please enter a choice between 1 and 5:
-Please enter in the flight id between 100 and 900:
-Please enter in the plane id between 0 and 9:
-Please enter in the arrival date and time in format HH:mm dd/MM/yyyy:
-Fligth JST150 on plane JST8A has been added to the system.
+3. Book an arrival flight.
+4. Book a departure flight.
+5. See flight details.
+6. Logout.
+Please enter a choice between 1 and 6:
+Your details.
+Name: Shara Lee
+Age: 47
+Mobile phone number: 0478373750
+Email: shara@example.com
+Frequent flyer number: 123456
+Points: 500000
 
-Flight Manager Menu.
+Frequent Flyer Menu.
 Please make a choice from the menu below:
 1. See my details.
 2. Change password.
-3. Create an arrival flight.
-4. Create a departure flight.
-5. Delay an arrival flight.
-6. Delay a departure flight.
-7. see the details of all flights.
-8. Logout.
-Please enter a choice between 1 and 8:
-
-Arrival Flights:
-Flight 150 operated by Jetstar arriving at 12:00 25/12/2024 from dasa on plane 8.
-Departure Flights:
-There are no departure flights.
-
-Flight Manager Menu.
-Please make a choice from the menu below:
-1. See my details.
-2. Change password.
-3. Create an arrival flight.
-4. Create a departure flight.
-5. Delay an arrival flight.
-6. Delay a departure flight.
-7. see the details of all flights.
-8. Logout.
-Please enter a choice between 1 and 8:
-Please make a choice from the menu below:
-1. Login as a registered user.
-2. Register as a new user.
-3. Exit.
-Please enter a choice between 1 and 3:
-Thank you. Safe travels.
+3. Book an arrival flight.
+4. Book a departure flight.
+5. See flight details.
+6. Logout.
+Please enter a choice between 1 and 6:
+Please enter a choice between 1 and 6:
+Please enter in the arrival flight code: 
